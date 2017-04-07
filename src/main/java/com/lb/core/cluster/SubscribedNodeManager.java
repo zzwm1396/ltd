@@ -1,6 +1,8 @@
 package com.lb.core.cluster;
 
 import com.lb.core.AppContext;
+import com.lb.core.commons.utils.CollectionUtils;
+import com.lb.core.commons.utils.ListUtils;
 import com.lb.core.enums.NodeType;
 import com.lb.core.listener.NodeChangeListener;
 
@@ -34,6 +36,16 @@ public class SubscribedNodeManager implements NodeChangeListener {
         nodeSet.add(node);
     }
 
+    public  List<Node> getNodeList(final NodeType nodeType, final String nodeGroup){
+        Set<Node> ns = nodes.get(nodeType);
+
+        return ListUtils.filter(CollectionUtils.setToList(ns), new ListUtils.Filter<Node>() {
+            @Override
+            public boolean filter(Node node) {
+                return node.getGroup().equals(nodeGroup);
+            }
+        });
+    }
     @Override
     public void addNodes(List<Node> nodes) {
 
