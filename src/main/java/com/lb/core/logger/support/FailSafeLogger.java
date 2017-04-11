@@ -26,101 +26,153 @@ public class FailSafeLogger  extends AbstractLogger implements Logger{
 
     @Override
     public void trace(String msg) {
+        try{
+            logger.trace(appendContextMessage(msg));
+        } catch (Throwable ignored){
 
+        }
     }
 
     @Override
     public void trace(Throwable e) {
+        try{
+            logger.trace(e);
+        } catch (Throwable ignored){
 
+        }
     }
 
     @Override
     public void trace(String msg, Throwable e) {
+        try{
+            logger.trace(appendContextMessage(msg), e);
+        } catch (Throwable ignored){
 
-    }
-
-    @Override
-    public void debug(String msg) {
-
-    }
-
-    @Override
-    public void debug(Throwable e) {
-
+        }
     }
 
     @Override
     public void debug(String msg, Throwable e) {
-
+        try {
+            logger.debug(appendContextMessage(msg), e);
+        } catch (Throwable ignored) {
+        }
     }
 
-    @Override
-    public void info(String msg) {
-
+    public void debug(Throwable e) {
+        try {
+            logger.debug(e);
+        } catch (Throwable ignored) {
+        }
     }
 
-    @Override
+    public void debug(String msg) {
+        try {
+            logger.debug(appendContextMessage(msg));
+        } catch (Throwable ignored) {
+        }
+    }
+
     public void info(String msg, Throwable e) {
-
+        try {
+            logger.info(appendContextMessage(msg), e);
+        } catch (Throwable ignored) {
+        }
     }
 
-    @Override
-    public void info(Throwable e) {
-
+    public void info(String msg) {
+        try {
+            logger.info(appendContextMessage(msg));
+        } catch (Throwable ignored) {
+        }
     }
 
-    @Override
-    public void warn(String msg) {
-
-    }
-
-    @Override
     public void warn(String msg, Throwable e) {
-
+        try {
+            logger.warn(appendContextMessage(msg), e);
+        } catch (Throwable ignored) {
+        }
     }
 
-    @Override
-    public void warn(Throwable e) {
-
+    public void warn(String msg) {
+        try {
+            logger.warn(appendContextMessage(msg));
+        } catch (Throwable ignored) {
+        }
     }
 
-    @Override
-    public void error(String msg) {
-
-    }
-
-    @Override
     public void error(String msg, Throwable e) {
-
+        try {
+            logger.error(appendContextMessage(msg), e);
+        } catch (Throwable ignored) {
+        }
     }
 
-    @Override
+    public void error(String msg) {
+        try {
+            logger.error(appendContextMessage(msg));
+        } catch (Throwable ignored) {
+        }
+    }
+
     public void error(Throwable e) {
-
+        try {
+            logger.error(e);
+        } catch (Throwable ignored) {
+        }
     }
 
-    @Override
+    public void info(Throwable e) {
+        try {
+            logger.info(e);
+        } catch (Throwable ignored) {
+        }
+    }
+
+    public void warn(Throwable e) {
+        try {
+            logger.warn(e);
+        } catch (Throwable ignored) {
+        }
+    }
+
     public boolean isTraceEnabled() {
-        return false;
+        try {
+            return logger.isTraceEnabled();
+        } catch (Throwable t) {
+            return false;
+        }
     }
 
-    @Override
-    public boolean isInfoEnabled() {
-        return false;
-    }
-
-    @Override
     public boolean isDebugEnabled() {
-        return false;
+        try {
+            return logger.isDebugEnabled();
+        } catch (Throwable t) {
+            return false;
+        }
     }
 
-    @Override
+    public boolean isInfoEnabled() {
+        try {
+            return logger.isInfoEnabled();
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
     public boolean isWarnEnabled() {
-        return false;
+        try {
+            return logger.isWarnEnabled();
+        } catch (Throwable t) {
+            return false;
+        }
     }
 
-    @Override
     public boolean isErrorEnabled() {
-        return false;
+        try {
+            return logger.isErrorEnabled();
+        } catch (Throwable t) {
+            return false;
+        }
     }
 }

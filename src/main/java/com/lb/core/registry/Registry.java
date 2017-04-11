@@ -3,6 +3,7 @@ package com.lb.core.registry;
 import com.lb.core.cluster.Node;
 
 /**
+ * 节点注册接口
  * Created by libo on 2017/4/7.
  */
 public interface Registry {
