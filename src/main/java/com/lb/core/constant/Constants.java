@@ -1,6 +1,7 @@
 package com.lb.core.constant;
 
 /**
+ * 配置常量
  * Created by libo on 2017/4/10.
  */
 public interface Constants {

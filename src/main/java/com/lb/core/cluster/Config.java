@@ -35,7 +35,7 @@ public class Config implements Serializable {
     // 工作线程， 目前只对 TaskTracker 有效
     @Setter
     @Getter
-    private int workThread;
+    private int workThreads;
 
     // 节点类型
     @Setter

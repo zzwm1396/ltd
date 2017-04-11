@@ -14,6 +14,7 @@ import java.util.List;
  * Created by libo on 2017/4/7.
  */
 public class Node {
+
     @Getter
     @Setter
     private boolean available = true;
