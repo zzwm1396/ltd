@@ -1,18 +1,24 @@
 package com.lb.core.cluster;
 
 import com.lb.core.AppContext;
+import com.lb.core.constant.EcTopic;
+import com.lb.core.ec.EventInfo;
 import com.lb.core.listener.MasterChangeListener;
-import org.apache.log4j.Logger;
+import com.lb.core.logger.Logger;
+import com.lb.core.logger.LoggerFactory;
+
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * 节点选举者
  * Created by libo on 2017/4/10.
  */
+
 public class MasterElector {
-    private static final Logger logger = Logger.getLogger(MasterElector.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MasterElector.class);
 
     private AppContext appContext;
 
@@ -61,16 +67,40 @@ public class MasterElector {
         try{
             if (master == null){
                 master = newNode;
-                not
+                notifyListener();
+            } else {
+                if (master.getCreateTime() > newNode.getCreateTime()){
+                    master = newNode;
+                    notifyListener();
+                }
             }
+        } finally {
+            lock.unlock();
         }
     }
 
-    private void notifyListener(){
+    private void notifyListener() {
         boolean isMaster = false;
-        if (appContext.getConfig().getIdentity().equals(master.getIdentity())){
-            logger.info("Current node become the master node:{}", );
+        if (appContext.getConfig().getIdentity().equals(master.getIdentity())) {
+            LOGGER.info("Current node become the master node:{}", master);
+            isMaster = true;
+        } else {
+            LOGGER.info("Master node is :{}", master);
+            isMaster = false;
         }
+
+        if (listeners != null) {
+            for (MasterChangeListener masterChangeListener : listeners) {
+                try {
+                    masterChangeListener.change(master, isMaster);
+                } catch (Throwable t) {
+                    LOGGER.error("MasterChangeListener notify error!", t);
+                }
+            }
+        }
+        EventInfo eventInfo = new EventInfo(EcTopic.MASTER_CHANGED);
+        eventInfo.setParam("master", master);
+        appContext.getEventCenter().publishSync(eventInfo);
     }
 
 }
