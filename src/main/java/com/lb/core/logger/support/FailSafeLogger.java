@@ -1,6 +1,8 @@
 package com.lb.core.logger.support;
 
+import com.lb.core.commons.utils.NetUtils;
 import com.lb.core.logger.Logger;
+import com.lb.core.support.Version;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,8 +20,7 @@ public class FailSafeLogger  extends AbstractLogger implements Logger{
     }
 
     private String appendContextMessage(String msg){
-
-        return null;
+        return "[LTD] " + msg + ", ltd version: " + Version.getVersion() + ", current host: " + NetUtils.getLocalHost();
     }
 
 
