@@ -2,6 +2,7 @@ package com.lb.core.monitor;
 
 import com.lb.core.AppContext;
 import com.lb.core.cluster.Config;
+import com.lb.core.constant.ExtConfig;
 import com.lb.core.factory.NameThreadFactory;
 import com.lb.core.logger.Logger;
 import com.lb.core.logger.LoggerFactory;
@@ -10,6 +11,7 @@ import com.lb.core.monitor.jvmmonitor.JVMMonitor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -36,6 +38,16 @@ public abstract class AbstractMStatReporter implements MStatReporter {
     @Override
     public void start() {
         JVMMonitor.start();
+
+        try{
+            if (!config.getParameter(ExtConfig.M_STAT_REPORTER_CLOSED, false)){
+                if (start.compareAndSet(false, true)){
+                    scheduledFuture = executor.scheduleWithFixedDelay(
+                        new MStatReporterWork(appContext, this), 1, 1, TimeUnit.SECONDS
+                    );
+                }
+            }
+        }
 
     }
 
