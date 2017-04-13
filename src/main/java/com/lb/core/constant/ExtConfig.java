@@ -18,4 +18,12 @@ public interface ExtConfig {
      */
     String REGISTRY_RETRY_PERIOD_KEY = "retry.period";
 
+    String LOADBALANCE = "loadbalance";
+
+
+    /**
+     *  向monitor汇报数据间隔
+     */
+    String LTS_MONITOR_REPORT_INTERVAL = "ltd.monitor.report.interval";
+
 }
