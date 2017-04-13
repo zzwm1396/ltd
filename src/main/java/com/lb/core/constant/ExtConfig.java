@@ -5,4 +5,17 @@ package com.lb.core.constant;
  */
 public interface ExtConfig {
     public String M_STAT_REPORTER_CLOSED = "MStatReport.closed";
+
+    /**
+     * java 编译器，可选值，jdk, javassist, 默认javassist
+     */
+    String COMPILER = "java.compiler";
+
+    String HTTP_CMD_PORT = "ltd.http.cmd.port";
+
+    /**
+     * 注册中心失败事件重试事件
+     */
+    String REGISTRY_RETRY_PERIOD_KEY = "retry.period";
+
 }

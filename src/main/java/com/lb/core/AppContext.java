@@ -3,8 +3,10 @@ package com.lb.core;
 import com.lb.core.cluster.Config;
 import com.lb.core.cluster.MasterElector;
 import com.lb.core.cluster.SubscribedNodeManager;
+import com.lb.core.cmd.HttpCmdServer;
 import com.lb.core.command.CommandBodyWrapper;
 import com.lb.core.ec.EventCenter;
+import com.lb.core.registry.RegistryStatMonitor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,6 +39,17 @@ public abstract class AppContext {
     @Setter
     @Getter
     private CommandBodyWrapper commandBodyWrapper;
+
+    // 注册中心状态监控
+    @Setter
+    @Getter
+    private RegistryStatMonitor registryStatMonitor;
+
+    // 命令中心
+    @Getter
+    @Setter
+    private HttpCmdServer httpCmdServer;
+
 
 
 }

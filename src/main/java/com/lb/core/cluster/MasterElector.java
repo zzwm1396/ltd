@@ -1,6 +1,7 @@
 package com.lb.core.cluster;
 
 import com.lb.core.AppContext;
+import com.lb.core.commons.utils.CollectionUtils;
 import com.lb.core.constant.EcTopic;
 import com.lb.core.ec.EventInfo;
 import com.lb.core.listener.MasterChangeListener;
@@ -24,26 +25,27 @@ public class MasterElector {
 
     private List<MasterChangeListener> listeners;
     private Node master;
-    private ReentrantLock lock  = new ReentrantLock();
+    private ReentrantLock lock = new ReentrantLock();
 
-    public MasterElector(AppContext appContext){
+    public MasterElector(AppContext appContext) {
         this.appContext = appContext;
     }
 
     /**
      * 添加监听节点列表
+     *
      * @param masterChangeListeners 需要添加的监听节点集合
      */
-    public void addMasterChangeLinstener(List<MasterChangeListener> masterChangeListeners){
+    public void addMasterChangeLinstener(List<MasterChangeListener> masterChangeListeners) {
         if (listeners == null)
             listeners = new CopyOnWriteArrayList<MasterChangeListener>();
 
-        if (!masterChangeListeners.isEmpty()){
+        if (!masterChangeListeners.isEmpty()) {
             listeners.addAll(masterChangeListeners);
         }
     }
 
-    public void addNodes(List<Node> nodes){
+    public void addNodes(List<Node> nodes) {
         lock.lock();
         try {
             Node newMaster = null;
@@ -51,25 +53,25 @@ public class MasterElector {
                 if (newMaster == null)
                     newMaster = node;
                 else {
-                    if (newMaster.getCreateTime() > node.getCreateTime()){
+                    if (newMaster.getCreateTime() > node.getCreateTime()) {
                         newMaster = node;
                     }
                 }
             }
             addNode(newMaster);
-        }finally {
+        } finally {
             lock.unlock();
         }
     }
 
-    private void addNode(Node newNode){
+    private void addNode(Node newNode) {
         lock.lock();
-        try{
-            if (master == null){
+        try {
+            if (master == null) {
                 master = newNode;
                 notifyListener();
             } else {
-                if (master.getCreateTime() > newNode.getCreateTime()){
+                if (master.getCreateTime() > newNode.getCreateTime()) {
                     master = newNode;
                     notifyListener();
                 }
@@ -78,6 +80,42 @@ public class MasterElector {
             lock.unlock();
         }
     }
+
+    public void removeNode(List<Node> removedNodes) {
+        lock.lock();
+        try {
+            if (master != null) {
+                boolean masterRemoved = false;
+                for (Node removedNode : removedNodes) {
+                    if (master.getIdentity().equals(removedNode.getIdentity())) {
+                        masterRemoved = true;
+                    }
+                }
+                if (masterRemoved) {
+                    // 如果挂掉的是master, 需要重新选举
+                    List<Node> nodes = appContext.getSubscribedNodeManager().
+                            getNodeList(appContext.getConfig().getNodeType(), appContext.getConfig().getNodeGroup());
+                    if (CollectionUtils.isNotEmpty(nodes)) {
+                        Node newMaster = null;
+                        for (Node node : nodes) {
+                            if (newMaster == null) {
+                                newMaster = node;
+                            } else {
+                                if (newMaster.getCreateTime() > node.getCreateTime()) {
+                                    newMaster = node;
+                                }
+                            }
+                        }
+                        master = newMaster;
+                        notifyListener();
+                    }
+                }
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
 
     private void notifyListener() {
         boolean isMaster = false;

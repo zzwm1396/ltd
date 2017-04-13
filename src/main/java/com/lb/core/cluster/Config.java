@@ -96,6 +96,25 @@ public class Config implements Serializable {
         return value;
     }
 
+    public int getParameter(String key, int defaultValue) {
+        Number n = getNumbers().get(key);
+        if (n != null) {
+            return n.intValue();
+        }
+        String value = getParameter(key);
+        if (value == null || value.length() == 0) {
+            return defaultValue;
+        }
+        int i = Integer.parseInt(value);
+        getNumbers().put(key, i);
+        return i;
+    }
+
+
+    public void setParameter(String key, String value){
+        parameters.put(key, value);
+    }
+
     public boolean getParameter(String key, boolean defaultValue) {
         String value = getParameter(key);
         if (value == null || value.length() == 0)

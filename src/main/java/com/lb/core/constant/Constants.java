@@ -32,6 +32,11 @@ public interface Constants {
 
     int DEFAULT_BUFFER_SIZE = 16 * 1024 * 1024;
 
+    /**
+     * 重试周期
+     */
+    int DEFAULT_REGISTRY_RETRY_PERIOD = 5 * 1000;
+
 
 
 }
