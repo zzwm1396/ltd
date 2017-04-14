@@ -5,7 +5,7 @@ import com.lb.core.cluster.Config;
 
 /**
  * CommandBody 包装器，
- * 用于设置一些基本嘻嘻
+ * 用于设置一些基本信息
  * Created by libo on 2017/4/14.
  */
 public class CommandBodyWrapper {
