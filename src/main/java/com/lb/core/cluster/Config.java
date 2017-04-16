@@ -77,7 +77,7 @@ public class Config implements Serializable {
     @Setter
     private volatile transient Map<String, Number> numbers;
 
-    private String getParameter(String key) {
+    public String getParameter(String key) {
         return parameters.get(key);
     }
 
