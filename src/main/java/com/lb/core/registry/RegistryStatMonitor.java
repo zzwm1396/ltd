@@ -20,6 +20,10 @@ public class RegistryStatMonitor {
         this.appContext = appContext;
     }
 
+    /**
+     * 设置节点状态
+     * @param available 节点状态
+     */
     public void setAvailable(boolean available) {
         this.available.set(available);
 
@@ -31,6 +35,10 @@ public class RegistryStatMonitor {
                 available ? EcTopic.REGISTRY_AVAILABLE : EcTopic.REGISTRY_UN_AVAILABLE));
     }
 
+    /**
+     * 节点是否可用
+     * @return 是否可用
+     */
     public boolean isAvailable() {
         return this.available.get();
     }

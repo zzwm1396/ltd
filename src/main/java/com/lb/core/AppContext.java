@@ -1,9 +1,12 @@
 package com.lb.core;
 
 import com.lb.core.cluster.Config;
+import com.lb.core.cluster.MasterElector;
 import com.lb.core.cluster.SubscribedNodeManager;
+import com.lb.core.cmd.HttpCmdServer;
 import com.lb.core.command.CommandBodyWrapper;
 import com.lb.core.ec.EventCenter;
+import com.lb.core.monitor.MonitorStatReporter;
 import com.lb.core.registry.RegistryStatMonitor;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,11 +29,19 @@ public class AppContext {
     private SubscribedNodeManager subscribedNodeManager;
 
     // 节点通信CommandBody 包装器
-
     private CommandBodyWrapper commandBodyWrapper;
 
     // 注册中心状态监控
     private RegistryStatMonitor registryStatMonitor;
+
+    // 命令中心
+    private HttpCmdServer httpCmdServer;
+
+    // master选举者
+    private MasterElector masterElector;
+
+    // 监控中心
+    private MonitorStatReporter monitorStatReporter;
 
 
 }

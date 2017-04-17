@@ -80,6 +80,11 @@ public class Node {
      */
     private String fullString;
 
+    public String getAddress() {
+        return ip + ":" + port;
+    }
+
+
     @Override
     public String toString() {
         return JSON.toJSONString(this);

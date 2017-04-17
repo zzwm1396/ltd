@@ -13,69 +13,54 @@ import java.util.Map;
  * 任务节点配置
  * Created by libo on 2017/4/14.
  */
+@Getter
+@Setter
 public class Config implements Serializable {
 
     private static final long serialVersionUID = 4473661076279230005L;
 
     // 节点是否可用
-    @Getter
-    @Setter
     private boolean available = true;
 
     // 应用节点组
-    @Setter
-    @Getter
     private String nodeGroup;
 
     // 唯一标识
-    @Setter
-    @Getter
     private String identity;
 
     // 工作线程数
-    @Getter
-    @Setter
     private int workThreads;
 
     // 节点类型
-    @Setter
-    @Getter
     private NodeType nodeType;
 
     // 节点注册中心地址
-    @Getter
-    @Setter
     private String registryAddress;
 
     // 远程连接超时时间
-    @Setter
-    @Getter
     private int invokeTimeOutMillis;
 
     // 监听接口
-    @Getter
-    @Setter
     private int listenPort;
 
     // ip
-    @Setter
-    @Getter
     private String ip;
 
     // 集群名称
-    @Getter
-    @Setter
     private String clusterName;
 
     // 参数信息
-    @Setter
-    @Getter
     private final Map<String, String> parameters = new HashMap<>();
 
     // 内部使用，保证数字类型参数信息是最新的
-    @Getter
-    @Setter
     private volatile transient Map<String, Number> numbers;
+
+    // 任务信息存储路径
+    private String dataPath;
+
+    public void setParameter(String key, String value) {
+        parameters.put(key, value);
+    }
 
     public String getParameter(String key) {
         return parameters.get(key);

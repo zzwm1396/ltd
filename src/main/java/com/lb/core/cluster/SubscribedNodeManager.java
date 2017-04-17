@@ -29,6 +29,10 @@ public class SubscribedNodeManager implements NodeChangeListener {
 
     private AppContext appContext;
 
+    public SubscribedNodeManager(AppContext appContext) {
+        this.appContext = appContext;
+    }
+
     private void addNode(Node node){
         Set<Node> nodeSet = NODES.get(node.getNodeType());
         if (CollectionUtils.isEmpty(nodeSet)){

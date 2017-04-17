@@ -25,4 +25,35 @@ public interface EcTopic {
      * 注册中心不可用
      */
     String REGISTRY_UN_AVAILABLE = "REGISTRY_UN_AVAILABLE";
+
+    /**
+     *  Master 节点改变了
+     */
+    String MASTER_CHANGED = "MASTER_CHANGED";
+
+    /**
+     *  工作线程变化
+     */
+    String WORK_THREAD_CHANGE = "WORK_THREAD_CHANGE";
+
+    /**
+     * 节点启用
+     */
+    String NODE_ENABLE = "NODE_ENABLE";
+
+    /**
+     * 节点禁用
+     */
+    String NODE_DISABLE = "NODE_DISABLE";
+
+    /**
+     * 停掉节点
+     */
+    String NODE_SHUT_DOWN = "NODE_SHUT_DOWN";
+
+
+    /**
+     *  没有可用的JobTracker了
+     */
+    String NO_JOB_DISPATCH_AVAILABLE = "NO_JOB_DISPATCH_AVAILABLE";
 }
