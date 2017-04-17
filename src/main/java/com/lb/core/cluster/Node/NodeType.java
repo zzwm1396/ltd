@@ -10,9 +10,27 @@ package com.lb.core.cluster.Node;
  * Created by libo on 2017/4/14.
  */
 public enum  NodeType {
+    /**
+     * master节点
+     */
     MASTER_NODE,
+    /**
+     * 任务调度节点
+     */
     DISPATCH_NODE,
+
+    /**
+     * 任务执行节点
+     */
     TASK_NODE,
+
+    /**
+     * client节点
+     */
     CLIENT_NODE,
+
+    /**
+     * 监控节点
+     */
     MONITOR
 }
