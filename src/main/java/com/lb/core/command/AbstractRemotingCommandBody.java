@@ -2,10 +2,13 @@ package com.lb.core.command;
 
 import com.lb.core.annotation.NotNull;
 import com.lb.core.annotation.Nullable;
+import com.lb.core.remoting.RemotingCommandBody;
+import com.lb.core.remoting.exception.RemotingCommandFieldCheckException;
 import com.lb.core.support.SystemClock;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +16,7 @@ import java.util.Map;
  * 抽象的远程命令body
  * Created by libo on 2017/4/14.
  */
-public class AbstractRemotingCommandBody {
+public class AbstractRemotingCommandBody implements RemotingCommandBody {
     /**
      * 节点组 当前节点的 group(统一类型, 具有相同功能的节点group相同)
      */
@@ -58,5 +61,10 @@ public class AbstractRemotingCommandBody {
             this.extParams = new HashMap<String, Object>();
         }
         this.extParams.put(key, obj);
+    }
+
+    @Override
+    public void checkFields() throws RemotingCommandFieldCheckException {
+
     }
 }

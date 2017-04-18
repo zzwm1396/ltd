@@ -4,7 +4,6 @@ import com.lb.core.AppContext;
 import com.lb.core.cluster.Config;
 import com.lb.core.cluster.MasterElector;
 import com.lb.core.cluster.SubscribedNodeManager;
-import com.lb.core.cluster.constant.Constants;
 import com.lb.core.cluster.constant.EcTopic;
 import com.lb.core.cmd.HttpCmdServer;
 import com.lb.core.cmd.JVMInfoGetHttpCmd;
@@ -18,7 +17,6 @@ import com.lb.core.compiler.AbstractCompiler;
 import com.lb.core.constant.ExtConfig;
 import com.lb.core.ec.EventCenter;
 import com.lb.core.ec.EventInfo;
-import com.lb.core.factory.NamedThreadFactory;
 import com.lb.core.factory.NodeConfigFactory;
 import com.lb.core.factory.NodeFactory;
 import com.lb.core.factory.RegistryFactory;
@@ -31,8 +29,8 @@ import com.lb.core.registry.base.AbstractRegistry;
 import com.lb.core.registry.base.NotifyEvent;
 import com.lb.core.registry.base.NotifyListener;
 import com.lb.core.registry.base.Registry;
+import com.lb.core.remoting.HeartBeatMonitor;
 import com.lb.core.remoting.RemotingClientDelegate;
-import com.lb.core.remoting.RemotingProcessor;
 import com.lb.core.remoting.RemotingServerDelegate;
 import com.lb.core.remoting.serialize.AdaptiveSerializable;
 import com.lb.core.spi.ServiceLoader;
@@ -42,14 +40,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static com.lb.core.cluster.Node.NodeType.DISPATCH_NODE;
-import static com.lb.core.cluster.Node.NodeType.TASK_NODE;
 
 /**
  * 抽象节点
@@ -57,11 +50,6 @@ import static com.lb.core.cluster.Node.NodeType.TASK_NODE;
  */
 @Slf4j
 public abstract class AbstractNode<T extends Node, Context extends AppContext> implements NodeManger {
-
-    protected RemotingServerDelegate remotingServer;
-    protected RemotingClientDelegate remotingClient;
-    private HeartBeatMonitor heartBeatMonitor;
-
 
     protected Registry registry;
     protected T node;
@@ -210,36 +198,7 @@ public abstract class AbstractNode<T extends Node, Context extends AppContext> i
         this.masterChangeListeners = new ArrayList<MasterChangeListener>();
     }
 
-    protected  void remotingStart(){
-
-        if (DISPATCH_NODE.equals(node.getNodeType())){
-            remotingServer.start();
-            RemotingProcessor defaultProcessor = getDefaultProcessor();
-            if (defaultProcessor != null) {
-                int processorSize = config.getParameter(ExtConfig.PROCESSOR_THREAD, Constants.DEFAULT_PROCESSOR_THREAD);
-                remotingServer.registerDefaultProcessor(defaultProcessor,
-                        Executors.newFixedThreadPool(processorSize, new NamedThreadFactory(AbstractNode.class.getSimpleName(), true)));
-            }
-        }
-
-        if (TASK_NODE.equals(node.getNodeType())){
-            remotingClient.start();
-            heartBeatMonitor.start();
-
-            RemotingProcessor defaultProcessor = getDefaultProcessor();
-            if (defaultProcessor != null) {
-                int processorSize = config.getParameter(ExtConfig.PROCESSOR_THREAD, Constants.DEFAULT_PROCESSOR_THREAD);
-                remotingClient.registerDefaultProcessor(defaultProcessor,
-                        Executors.newFixedThreadPool(processorSize,
-                                new NamedThreadFactory(AbstractNode.class.getSimpleName(), true)));
-            }
-        }
-    }
-
-    /**
-     * 得到默认的处理器
-     */
-    protected abstract RemotingProcessor getDefaultProcessor();
+    protected abstract void remotingStart();
 
     protected abstract void remotingStop();
 
@@ -251,6 +210,9 @@ public abstract class AbstractNode<T extends Node, Context extends AppContext> i
 
     protected abstract void afterRemotingStop();
 
+    /**
+     * 启动节点
+     */
     @Override
     final public void start() {
         try {
@@ -289,6 +251,9 @@ public abstract class AbstractNode<T extends Node, Context extends AppContext> i
         }
     }
 
+    /**
+     * 停掉节点
+     */
     @Override
     final public void stop() {
         try {
@@ -315,6 +280,9 @@ public abstract class AbstractNode<T extends Node, Context extends AppContext> i
         }
     }
 
+    /**
+     * 销毁节点
+     */
     @Override
     public void destroy() {
         try {

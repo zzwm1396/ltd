@@ -53,7 +53,13 @@ public interface EcTopic {
 
 
     /**
-     *  没有可用的JobTracker了
+     *  没有可用的JOB_DISPATCH了
      */
     String NO_JOB_DISPATCH_AVAILABLE = "NO_JOB_DISPATCH_AVAILABLE";
+
+    /**
+     * 任务调度节点可用
+     */
+    String JOB_DISPATCH_AVAILABLE = "JOB_DISPATCH_AVAILABLE";
+
 }
