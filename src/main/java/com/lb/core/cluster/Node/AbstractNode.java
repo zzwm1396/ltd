@@ -198,16 +198,34 @@ public abstract class AbstractNode<T extends Node, Context extends AppContext> i
         this.masterChangeListeners = new ArrayList<MasterChangeListener>();
     }
 
+    /**
+     * 远程启动节点
+     */
     protected abstract void remotingStart();
 
+    /**
+     * 远程停止节点
+     */
     protected abstract void remotingStop();
 
+    /**
+     * 远程启动节点前
+     */
     protected abstract void beforeRemotingStart();
 
+    /**
+     * 远程启动节点后
+     */
     protected abstract void afterRemotingStart();
 
+    /**
+     * 远程停止节点前
+     */
     protected abstract void beforeRemotingStop();
 
+    /**
+     * 远程停止节点后
+     */
     protected abstract void afterRemotingStop();
 
     /**

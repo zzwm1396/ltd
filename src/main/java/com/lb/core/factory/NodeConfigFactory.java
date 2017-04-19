@@ -42,8 +42,8 @@ public class NodeConfigFactory {
 
     private static String getNodeTypeShort(NodeType nodeType) {
         switch (nodeType) {
-            case MASTER_NODE:
-                return "MS";
+            case DISPATCH_NODE:
+                return "DI";
             case CLIENT_NODE:
                 return "CL";
             case TASK_NODE:

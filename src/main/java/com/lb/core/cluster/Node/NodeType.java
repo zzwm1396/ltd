@@ -28,4 +28,9 @@ public enum  NodeType {
      */
     CLIENT_NODE,
 
+    /**
+     * MONITOR节点
+     */
+    MONITOR
+
 }
